@@ -1,6 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\AdminClassController;
+use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminTeacherController;
+use App\Http\Controllers\Admin\AdminMeetingController;
+use App\Http\Controllers\Admin\AdminParentController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,9 +35,23 @@ require __DIR__ . '/auth.php';
 
 // ADMIN
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::view('/dashboard', 'admin.dashboard');
+    // Route::view('/dashboard', 'admin.dashboard');
 
-    Route::resource('classes', ClassController::class);
+    Route::resource('classes', AdminClassController::class);
+    Route::resource('students', AdminStudentController::class);
+    Route::resource('teachers', AdminTeacherController::class);
+    Route::resource('meetings', AdminMeetingController::class);
+    Route::resource('parents', AdminParentController::class);
+    // View Meetings
+    Route::get('/meetings', [AdminMeetingController::class, 'index'])->name('meetings.index');
+    Route::get('/meetings/{meeting}', [AdminMeetingController::class, 'show'])->name('meetings.show');
+
+    // View Student Progress (Admin – Read Only)
+    Route::get('/student-progress', [AdminStudentProgressController::class, 'index'])->name('student-progress.index');
+    Route::get('/student-progress/{progress}', [AdminStudentProgressController::class, 'show'])->name('student-progress.show');
+
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('admin.dashboard');
 });
 
 // GURU

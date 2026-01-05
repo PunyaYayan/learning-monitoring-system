@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassModel;
+use App\Models\TeacherModel;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
-class ClassController extends Controller
+class AdminClassController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $classes = ClassModel::orderBy('name')->paginate(10);
+        $classes = ClassModel::with('teacher.user')->orderBy('name')->paginate(10);
 
         return view('admin.classes.index', compact('classes'));
     }
@@ -24,7 +25,8 @@ class ClassController extends Controller
      */
     public function create()
     {
-        return view('admin.classes.create');
+        $teachers = TeacherModel::with('user')->orderBy('id')->get();
+        return view('admin.classes.create', compact('teachers'));
     }
 
     /**
@@ -36,6 +38,7 @@ class ClassController extends Controller
             'name' => ['required', 'string', 'max:255', 'unique:classes,name'],
             'level' => ['nullable', 'string', 'max:255'],
             'schedule_note' => ['nullable', 'string', 'max:255'],
+            'teacher_id' => ['nullable', 'exists:teachers,id'],
         ]);
 
         ClassModel::create($validated);
@@ -55,9 +58,11 @@ class ClassController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(ClassModel $class)
     {
-        return view('admin.classes.edit', compact('class'));
+        $teachers = TeacherModel::with('user')->get();
+
+        return view('admin.classes.edit', compact('class', 'teachers'));
     }
 
     /**
@@ -67,14 +72,15 @@ class ClassController extends Controller
     public function update(Request $request, ClassModel $class)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:classes, name'],
-            'level' => ['nullable', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'level' => ['required', 'string', 'max:255'],
             'schedule_note' => ['nullable', 'string', 'max:255'],
+            'teacher_id' => ['required', 'exists:teachers,id'],
         ]);
 
         $class->update($validated);
 
-        return redirect()->route('admin.classes.index')
+        return redirect()->route('classes.index')
             ->with('success', 'Kelas berhasil diperbarui.');
     }
 
@@ -85,7 +91,7 @@ class ClassController extends Controller
     {
         $class->delete();
 
-        return redirect()->route('admin.classes.index')
+        return redirect()->route('classes.index')
             ->with('success', 'Kelas berhasil dihapus.');
     }
 }

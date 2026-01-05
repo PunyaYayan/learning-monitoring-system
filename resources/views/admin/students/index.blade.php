@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white">
-            Data Kelas
+            Data Siswa
         </h2>
     </x-slot>
 
@@ -10,14 +10,14 @@
         {{-- Header --}}
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h3 class="text-lg font-semibold">Daftar Kelas</h3>
+                <h3 class="text-lg font-semibold">Daftar Siswa</h3>
                 <p class="text-sm text-gray-500">
-                    Kelola kelas dan level pembelajaran.
+                    Kelola data siswa, kelas, dan wali (opsional).
                 </p>
             </div>
 
-            <x-primary-button onclick="window.location='{{ route('classes.create') }}'">
-                Tambah Kelas
+            <x-primary-button onclick="window.location='{{ route('students.create') }}'">
+                Tambah Siswa
             </x-primary-button>
         </div>
 
@@ -26,41 +26,44 @@
             <table class="min-w-full text-sm border border-gray-100 rounded-lg overflow-hidden">
                 <thead class="bg-gray-50 text-gray-600">
                     <tr>
-                        <th class="px-4 py-3 text-left font-medium">Nama Kelas</th>
-                        <th class="px-4 py-3 text-left font-medium">Level</th>
-                        <th class="px-4 py-3 text-left font-medium">Guru</th>
-                        <th class="px-4 py-3 text-left font-medium">Keterangan</th>
+                        <th class="px-4 py-3 text-left font-medium">Nama</th>
+                        <th class="px-4 py-3 text-left font-medium">Asal Sekolah</th>
+                        <th class="px-4 py-3 text-left font-medium">Kelas</th>
+                        <th class="px-4 py-3 text-left font-medium">Wali</th>
                         <th class="px-4 py-3 text-right font-medium">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody class="divide-y">
-                    @forelse ($classes as $class)
+                    @forelse ($students as $student)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium">
-                                {{ $class->name }}
+                                <a href="{{ route('students.show', $student) }}" class="text-blue-600 hover:underline">
+                                    {{ $student->fullname }}
+                                </a>
+
                             </td>
 
                             <td class="px-4 py-3">
-                                {{ $class->level_label ?? '-'}}
+                                {{ $student->school ?? '-' }}
                             </td>
 
                             <td class="px-4 py-3">
-                                {{ $class->teacher->user->name ?? '-' }}
+                                {{ $student->class?->name ?? '-' }}
                             </td>
 
                             <td class="px-4 py-3">
-                                {{ $class->schedule_note ?? '-' }}
+                                {{ $student->parent?->name ?? '-' }}
                             </td>
 
                             <td class="px-4 py-3 text-right space-x-2">
-                                <a href="{{ route('classes.edit', $class) }}"
+                                <a href="{{ route('students.edit', $student) }}"
                                     class="text-sm text-indigo-600 hover:underline">
                                     Edit
                                 </a>
 
-                                <form action="{{ route('classes.destroy', $class) }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
+                                <form action="{{ route('students.destroy', $student) }}" method="POST" class="inline"
+                                    onsubmit="return confirm('Yakin ingin menghapus siswa ini?')">
                                     @csrf
                                     @method('DELETE')
 
@@ -72,8 +75,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 py-8 text-center text-gray-500">
-                                Belum ada data kelas.
+                            <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                                Belum ada data siswa.
                             </td>
                         </tr>
                     @endforelse

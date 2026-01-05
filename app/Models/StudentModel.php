@@ -8,6 +8,22 @@ class StudentModel extends Model
 {
     // Karena tabelnya  'students' dan modelnya 'StudentModel'
     protected $table = 'students';
+    protected $fillable = [
+        'fullname',
+        'birthdate',
+        'gender',
+        'school',
+        'address',
+        'parent_id',
+        'user_id',
+        'class_id',
+        'status_siswa',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function parent()
     {
@@ -17,4 +33,9 @@ class StudentModel extends Model
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
+    public function meetings()
+    {
+        return $this->belongsToMany(MeetingModel::class, 'student_progress', 'student_id', 'meeting_id')->withPivot(['progress_note', 'status'])->withTimestamps();
+    }
+
 }
