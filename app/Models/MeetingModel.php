@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\StudentProgressModel;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,9 @@ class MeetingModel extends Model
         'material',
         'note',
     ];
-
+    protected $casts = [
+        'meeting_date' => 'date',
+    ];
     public function class()
     {
         return $this->belongsTo(ClassModel::class);
@@ -28,7 +31,11 @@ class MeetingModel extends Model
 
     public function progresses()
     {
-        return $this->hasMany(StudentProgressModel::class);
+        return $this->hasMany(
+            StudentProgressModel::class,
+            'meeting_id',
+            'id'
+        );
     }
 }
 

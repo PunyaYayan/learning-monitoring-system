@@ -10,21 +10,47 @@ class AdminClassSeeder extends Seeder
 {
     public function run(): void
     {
-        $teacher = TeacherModel::first();
-        ClassModel::create([
-            'teacher_id' => $teacher?->id,
-            'name' => 'Pre Intermediate - A',
-            'level' => '7',
-            'created_at' => '2025-12-20 14:12:54',
-            'updated_at' => '2025-12-20 14:12:54',
-        ]);
-        $teacher = TeacherModel::first();
-        ClassModel::create([
-            'teacher_id' => $teacher?->id,
-            'name' => 'Pre Intermediate - B',
-            'level' => '7',
-            'created_at' => '2025-12-20 14:12:54',
-            'updated_at' => '2025-12-20 14:12:54',
-        ]);
+        $teachers = TeacherModel::all()->values();
+        $teacherCount = $teachers->count();
+
+        // Pola jadwal tetap
+        $schedules = [
+            'Senin & Kamis',
+            'Selasa & Jumat',
+            'Rabu & Sabtu',
+        ];
+
+        /**
+         * name => level
+         * level = single source of truth
+         */
+        $classes = [
+            'Pre School A' => 1,
+            'Pre Introduction A' => 2,
+            'Introduction A' => 3,
+            'Beginner A' => 5,
+            'Elementary A' => 6,
+            'Pre Intermediate A' => 7,
+            'Pre Intermediate B' => 7,
+            'Conversation For Adult' => 12,
+        ];
+
+        $i = 0;
+
+        foreach ($classes as $name => $level) {
+
+            ClassModel::create([
+                'name' => $name,
+                'level' => $level,
+
+                // rotasi guru
+                'teacher_id' => $teachers[$i % $teacherCount]->id,
+
+                // rotasi jadwal
+                'schedule_note' => $schedules[$i % count($schedules)],
+            ]);
+
+            $i++;
+        }
     }
 }

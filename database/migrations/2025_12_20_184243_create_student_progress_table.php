@@ -23,12 +23,8 @@ return new class extends Migration {
 
             $table->text('progress_note')->nullable();
 
-            $table->enum('status', [
-                'hadir',
-                'tidak_hadir',
-                'paham',
-                'belum_paham',
-            ])->default('hadir');
+            $table->integer('progress_value'); // 0–100
+
 
             $table->timestamps();
 

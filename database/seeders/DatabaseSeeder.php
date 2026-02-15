@@ -24,7 +24,12 @@ class DatabaseSeeder extends Seeder
                 AdminClassSeeder::class,
                 AdminParentSeeder::class,
                 AdminStudentSeeder::class,
+                SeederZayyan::class,
                 AdminMeetingSeeder::class,
+                AdminReportPeriodSeeder::class,
+                AdminStudentReportSeeder::class,
+                StudentProgressSeeder::class,
+                PPDBSeeder::class
             ]
         );
 

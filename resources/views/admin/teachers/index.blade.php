@@ -14,7 +14,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('teachers.create') }}">
+            <a href="{{ route('admin.teachers.create') }}">
                 <x-primary-button>
                     Tambah Guru
                 </x-primary-button>
@@ -47,7 +47,7 @@
                     @forelse ($teachers as $teacher)
                         <tr>
                             <td class="px-4 py-3 font-medium">
-                                <a href="{{ route('teachers.show', $teacher) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route('admin.teachers.show', $teacher) }}" class="text-blue-600 hover:underline">
                                     {{ $teacher->user->name }}
                                 </a>
 
@@ -67,11 +67,11 @@
 
                             <td class="px-4 py-2 text-sm text-center">
                                 <div class="flex justify-center gap-3">
-                                    <a href="{{ route('teachers.edit', $teacher) }}" class="text-blue-600 hover:underline">
+                                    <a href="{{ route('admin.teachers.edit', $teacher) }}" class="text-blue-600 hover:underline">
                                         Edit
                                     </a>
 
-                                    <form action="{{ route('teachers.destroy', $teacher) }}" method="POST"
+                                    <form action="{{ route('admin.teachers.destroy', $teacher) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus guru ini?')">
                                         @csrf
                                         @method('DELETE')

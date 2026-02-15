@@ -92,11 +92,11 @@
         </div>
 
         <div class="flex justify-end gap-3 mt-8">
-            <a href="{{ route('teachers.index') }}" class="text-sm text-gray-600 hover:underline">
+            <a href="{{ route('admin.teachers.index') }}" class="text-sm text-gray-600 hover:underline">
                 Kembali
             </a>
 
-            <a href="{{ route('teachers.edit', $teacher) }}">
+            <a href="{{ route('admin.teachers.edit', $teacher) }}">
                 <x-primary-button>
                     Edit
                 </x-primary-button>

@@ -14,7 +14,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('parents.create') }}">
+            <a href="{{ route('admin.parents.create') }}">
                 <x-primary-button>
                     Tambah Orang Tua
                 </x-primary-button>
@@ -37,10 +37,10 @@
                     @forelse ($parents as $parent)
                         <tr>
                             <!-- <td class="px-4 py-3">
-                                                            {{ $parent->name }}
-                                                        </td> -->
+                                                                {{ $parent->name }}
+                                                            </td> -->
                             <td class="px-4 py-3 font-medium">
-                                <a href="{{ route('parents.show', $parent) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route('admin.parents.show', $parent) }}" class="text-blue-600 hover:underline">
                                     {{ $parent->name }}
                                 </a>
 
@@ -59,11 +59,11 @@
                             </td>
 
                             <td class="px-4 py-3 text-center space-x-2">
-                                <a href="{{ route('parents.edit', $parent) }}"
+                                <a href="{{ route('admin.parents.edit', $parent) }}"
                                     class="text-sm text-indigo-600 hover:underline">
                                     Edit
                                 </a>
-                                <form action="{{ route('parents.destroy', $parent) }}" method="POST" class="inline"
+                                <form action="{{ route('admin.parents.destroy', $parent) }}" method="POST" class="inline"
                                     onsubmit="return confirm('Yakin ingin menghapus parent?')">
                                     @csrf
                                     @method('DELETE')
@@ -84,5 +84,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-4">
+            {{ $parents->links() }}
+        </div>
+
     </x-card>
 </x-app-layout>

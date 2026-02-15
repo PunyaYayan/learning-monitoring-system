@@ -16,7 +16,7 @@
         </div>
 
         {{-- Form --}}
-        <form method="POST" action="{{ route('classes.update', $class) }}">
+        <form method="POST" action="{{ route('admin.classes.update', $class) }}">
             @csrf
             @method('PUT')
 
@@ -31,12 +31,22 @@
                 </div>
 
                 {{-- Level --}}
-                <div>
+                <!-- <div>
                     <x-input-label for="level" value="Level (Opsional)" />
                     <x-text-input id="level" name="level" type="text" class="mt-1 block w-full"
                         value="{{ old('level', $class->level) }}" />
                     <x-input-error :messages="$errors->get('level')" />
-                </div>
+                </div> -->
+                <select name="level" id="level" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                    <option value="" disabled selected>— Pilih Level —</option>
+
+                    @foreach (\App\Models\ClassModel::LEVELS as $value => $label)
+                        <option value="{{ $value }}" @selected(old('level') == $value)>
+                            {{ $label }}
+                        </option>
+                    @endforeach
+                </select>
 
                 {{-- Keterangan --}}
                 <div>
@@ -65,7 +75,7 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-3 mt-8">
-                <a href="{{ route('classes.index') }}" class="text-sm text-gray-600 hover:underline">
+                <a href="{{ route('admin.classes.index') }}" class="text-sm text-gray-600 hover:underline">
                     Batal
                 </a>
 

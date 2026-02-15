@@ -35,7 +35,14 @@ class StudentModel extends Model
     }
     public function meetings()
     {
-        return $this->belongsToMany(MeetingModel::class, 'student_progress', 'student_id', 'meeting_id')->withPivot(['progress_note', 'status'])->withTimestamps();
+        return $this->belongsToMany(MeetingModel::class, 'student_progress', 'student_id', 'meeting_id')->withPivot(['progress_note', 'progress_value'])->withTimestamps();
     }
-
+    public function reports()
+    {
+        return $this->hasMany(StudentReport::class, 'student_id');
+    }
+    public function progresses()
+    {
+        return $this->hasMany(StudentProgress::class, 'student_id');
+    }
 }

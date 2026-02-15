@@ -16,7 +16,7 @@
                 </p>
             </div>
 
-            <x-primary-button onclick="window.location='{{ route('students.create') }}'">
+            <x-primary-button onclick="window.location='{{ route('admin.students.create') }}'">
                 Tambah Siswa
             </x-primary-button>
         </div>
@@ -38,7 +38,8 @@
                     @forelse ($students as $student)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium">
-                                <a href="{{ route('students.show', $student) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route('admin.students.show', $student) }}"
+                                    class="text-blue-600 hover:underline">
                                     {{ $student->fullname }}
                                 </a>
 
@@ -57,12 +58,12 @@
                             </td>
 
                             <td class="px-4 py-3 text-right space-x-2">
-                                <a href="{{ route('students.edit', $student) }}"
+                                <a href="{{ route('admin.students.edit', $student) }}"
                                     class="text-sm text-indigo-600 hover:underline">
                                     Edit
                                 </a>
 
-                                <form action="{{ route('students.destroy', $student) }}" method="POST" class="inline"
+                                <form action="{{ route('admin.students.destroy', $student) }}" method="POST" class="inline"
                                     onsubmit="return confirm('Yakin ingin menghapus siswa ini?')">
                                     @csrf
                                     @method('DELETE')
@@ -82,6 +83,11 @@
                     @endforelse
                 </tbody>
             </table>
+            {{-- Pagination --}}
+            <div class="mt-6">
+                {{ $students->links() }}
+            </div>
+
         </div>
 
     </x-card>

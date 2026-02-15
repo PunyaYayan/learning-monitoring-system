@@ -9,7 +9,7 @@
             <p class="text-sm text-gray-500">Isi data siswa. Data wali bersifat opsional.</p>
         </div>
 
-        <form method="POST" action="{{ route('students.store') }}">
+        <form method="POST" action="{{ route('admin.students.store') }}">
             @csrf
 
             <div class="space-y-5">
@@ -97,7 +97,7 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-8">
-                <a href="{{ route('students.index') }}" class="text-sm text-gray-600 hover:underline">Batal</a>
+                <a href="{{ route('admin.students.index') }}" class="text-sm text-gray-600 hover:underline">Batal</a>
                 <x-primary-button>Simpan</x-primary-button>
             </div>
         </form>

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 
 use App\Models\ClassModel;
 use App\Models\ParentModel;
 use App\Models\StudentModel;
 use \App\Models\User;
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AdminStudentController extends Controller
 {
@@ -19,7 +23,7 @@ class AdminStudentController extends Controller
     {
         $students = StudentModel::with(['class', 'parent'])
             ->latest()
-            ->get();
+            ->paginate(12);
 
         return view('admin.students.index', compact('students'));
     }
@@ -145,7 +149,7 @@ class AdminStudentController extends Controller
         // 'class_id',
         // 'status_siswa',
 
-        return redirect()->route('students.index');
+        return redirect()->route('admin.students.index');
     }
 
 
@@ -155,14 +159,49 @@ class AdminStudentController extends Controller
      */
     public function show(StudentModel $student)
     {
-        $student->load(['user', 'parent', 'class', 'meetings']);
+        $student->load([
+            'user',
+            'parent.user',
+            'class',
+        ]);
 
-        return view('admin.students.show', compact('student'));
+        $meetings = $student->meetings()
+            ->with('teacher.user')
+            ->orderBy('meeting_date', 'desc')
+            ->paginate(8); // jumlah per halaman
+
+        $loginAccounts = [];
+
+        if ($student->user) {
+            $loginAccounts[] = [
+                'label' => 'Student',
+                'phone' => $student->user->phone,
+                'name' => $student->user->name,
+                'role' => $student->user->role,
+            ];
+        }
+
+        if ($student->parent && $student->parent->user) {
+            $loginAccounts[] = [
+                'label' => 'Parent',
+                'phone' => $student->parent->user->phone,
+                'name' => $student->parent->user->name,
+                'role' => $student->parent->user->role,
+            ];
+        }
+
+        return view('admin.students.show', [
+            'student' => $student,
+            'meetings' => $meetings,
+            'loginAccounts' => $loginAccounts,
+        ]);
     }
+
 
     public function edit(StudentModel $student)
     {
-        return view('admin.students.edit', compact('student'));
+        $classes = ClassModel::orderBy('name')->get();
+        return view('admin.students.edit', compact('student', 'classes'));
     }
 
     /**
@@ -176,25 +215,59 @@ class AdminStudentController extends Controller
             'gender' => 'nullable|in:male,female',
             'school' => 'nullable|string',
             'address' => 'nullable|string',
+            'class_id' => 'nullable|exists:classes,id',
+            'phone' => 'nullable|string',
         ]);
 
-        $student->update($validated);
-        // BUAT USER JIKA BELUM ADA
-        if ($request->filled('login_phone') && is_null($student->user_id)) {
+        try {
 
-            $user = User::create([
-                'name' => $student->fullname,
-                'phone' => $request->login_phone,
-                'role' => 'student',
-                'password' => bcrypt(Str::random(12)),
+            DB::transaction(function () use ($validated, $student, $request) {
+
+                // Update student
+                $student->update($validated);
+
+                // Update user jika ada
+                if ($student->user && $request->filled('phone')) {
+
+                    $student->user->update([
+                        'name' => $student->fullname,
+                        'phone' => $request->phone,
+                    ]);
+                }
+
+                // Create user jika belum ada
+                if (!$student->user && $request->filled('phone')) {
+
+                    $user = User::create([
+                        'name' => $student->fullname,
+                        'phone' => $request->phone,
+                        'role' => 'student',
+                        'password' => bcrypt(Str::random(12)),
+                    ]);
+
+                    $student->update([
+                        'user_id' => $user->id,
+                    ]);
+                }
+
+            });
+
+        } catch (\Throwable $e) {
+
+            Log::error('Update student failed', [
+                'student_id' => $student->id,
+                'error' => $e->getMessage(),
             ]);
 
-            $student->update([
-                'user_id' => $user->id,
-            ]);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Gagal menyimpan data siswa.');
         }
 
-        return redirect()->route('students.index');
+        return redirect()
+            ->route('admin.students.index')
+            ->with('success', 'Data siswa berhasil diperbarui.');
     }
 
 
@@ -228,7 +301,7 @@ class AdminStudentController extends Controller
         }
 
         return redirect()
-            ->route('students.index')
+            ->route('admin.students.index')
             ->with('success', 'Data siswa berhasil dihapus.');
     }
 

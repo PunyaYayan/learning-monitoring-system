@@ -3,22 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use App\Models\ParentModel;
 
 class AdminParentSeeder extends Seeder
 {
     public function run(): void
     {
-        ParentModel::create([
-            'user_id' => 5,
-            'name' => 'Bapaknya Tegar',
-            'email' => 'tegar@ar.com',
-        ]);
+        $parents = User::where('role', 'ortu')->get();
 
-        ParentModel::create([
-            'user_id' => 7,
-            'name' => 'Bapaknya Apip',
-            'email' => null,
-        ]);
+        foreach ($parents as $user) {
+            ParentModel::create([
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ]);
+        }
     }
 }

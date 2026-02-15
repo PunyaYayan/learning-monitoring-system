@@ -15,8 +15,7 @@
                     Kelola kelas dan level pembelajaran.
                 </p>
             </div>
-
-            <x-primary-button onclick="window.location='{{ route('classes.create') }}'">
+            <x-primary-button onclick="window.location='{{ route('admin.classes.create') }}'">
                 Tambah Kelas
             </x-primary-button>
         </div>
@@ -54,12 +53,12 @@
                             </td>
 
                             <td class="px-4 py-3 text-right space-x-2">
-                                <a href="{{ route('classes.edit', $class) }}"
+                                <a href="{{ route('admin.classes.edit', $class) }}"
                                     class="text-sm text-indigo-600 hover:underline">
                                     Edit
                                 </a>
 
-                                <form action="{{ route('classes.destroy', $class) }}" method="POST" class="inline"
+                                <form action="{{ route('admin.classes.destroy', $class) }}" method="POST" class="inline"
                                     onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
                                     @csrf
                                     @method('DELETE')

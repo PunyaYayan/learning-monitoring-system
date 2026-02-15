@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\MeetingModel;
 use App\Models\ClassModel;
+use App\Models\StudentProgressModel;
 use Illuminate\Http\Request;
 
 class AdminMeetingController extends Controller
@@ -20,7 +21,7 @@ class AdminMeetingController extends Controller
             $query->where('class_id', $request->class_id);
         }
         if ($request->filled('date')) {
-            $query->where('meeting_date', $request->class_id);
+            $query->where('meeting_date', $request->date);
         }
         $meetings = $query->orderBy('meeting_date', 'desc')->paginate(10);
 
@@ -31,9 +32,17 @@ class AdminMeetingController extends Controller
 
     public function show(MeetingModel $meeting)
     {
-        $meeting->load(['class', 'teacher']);
+        $meeting->load(['class', 'teacher.user']);
 
-        return view('admin.meetings.show', compact('meeting'));
+        $progresses = StudentProgressModel::with('student')
+            ->where('meeting_id', $meeting->id)
+            ->orderBy('student_id')
+            ->get();
+
+        return view('admin.meetings.show', compact(
+            'meeting',
+            'progresses'
+        ));
     }
 
 
@@ -55,10 +64,10 @@ class AdminMeetingController extends Controller
             'note' => 'nullable|string',
         ]);
 
-        Meeting::create($data);
+        MeetingModel::create($data);
 
         return redirect()
-            ->route('meetings.index')
+            ->route('admin.meetings.index')
             ->with('success', 'Pertemuan berhasil ditambahkan.');
     }
 

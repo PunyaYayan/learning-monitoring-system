@@ -12,8 +12,22 @@ class StudentProgressModel extends Model
         'meeting_id',
         'student_id',
         'progress_note',
-        'status',
+        'progress_value',
     ];
+
+    public function getProgressLabelAttribute(): string
+    {
+        $value = $this->progress_value;
+
+        return match (true) {
+            $value === null => 'Belum Dinilai',
+            $value === 0 => 'Tidak Hadir',
+            $value < 60 => 'Penguasaan Dasar',
+            $value < 80 => 'Penguasaan Cukup',
+            default => 'Penguasaan Baik',
+        };
+    }
+
 
     public function meeting()
     {

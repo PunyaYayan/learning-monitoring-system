@@ -50,24 +50,23 @@
 
                         <tbody class="divide-y">
                             @foreach ($parent->students as $student)
-                                            <tr>
-                                                <td class="px-4 py-3">
-                                                    {{ $student->fullname }}
-                                                </td>
+                                <tr>
+                                     <td class="px-4 py-3">
+                                        {{ $student->fullname }}
+                                    </td>
 
-                                                <td class="px-4 py-3">
-                                                    {{ $student->class?->name ?? '-' }}
-                                                </td>
+                                     <td class="px-4 py-3">
+                                         {{ $student->class?->name ?? '-' }}
+                                     </td>
 
-                                                <td class="px-4 py-3 text-center">
-                                                    <span class="px-2 py-1 text-xs rounded
-                                                                                                                                                                                                                                {{ $student->status_siswa === 'active'
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-gray-100 text-gray-600' }}">
-                                                        {{ ucfirst($student->status_siswa) }}
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="px-2 py-1 text-xs rounded
+                                            {{ $student->status_siswa === 'active'? 'bg-green-100 text-green-700': 
+                                            'bg-gray-100 text-gray-600' }}">
+                                            {{ ucfirst($student->status_siswa) }}
+                                        </span>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -76,11 +75,11 @@
         </div>
 
         <div class="flex justify-end gap-3 mt-8">
-            <a href="{{ route('parents.index') }}" class="text-sm text-gray-600 hover:underline">
+            <a href="{{ route('admin.parents.index') }}" class="text-sm text-gray-600 hover:underline">
                 Kembali
             </a>
 
-            <a href="{{ route('parents.edit', $parent) }}">
+            <a href="{{ route('admin.parents.edit', $parent) }}">
                 <x-primary-button>Edit</x-primary-button>
             </a>
         </div>

@@ -37,12 +37,12 @@
                 <tbody>
                     @forelse ($meetings as $meeting)
                         <tr class="border-b hover:bg-gray-50 cursor-pointer"
-                            onclick="window.location='{{ route('meetings.show', $meeting) }}'">
+                            onclick="window.location='{{ route('admin.meetings.show', $meeting) }}'">
                             <td class="py-2">
-                                {{ $meeting->meeting_date}}
+                                {{  $meeting->meeting_date->locale('id')->translatedFormat('d F Y')}}
                             </td>
                             <td>{{ $meeting->class->name }}</td>
-                            <td>{{ $meeting->class->teacher->user->name }}</td>
+                            <td>{{ $meeting->teacher->user->name }}</td>
                             <td class="truncate max-w-xs">
                                 {{ $meeting->material }}
                             </td>

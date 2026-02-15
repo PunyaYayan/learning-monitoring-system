@@ -14,7 +14,7 @@
             </p>
         </div>
 
-        <form method="POST" action="{{ route('students.update', $student) }}">
+        <form method="POST" action="{{ route('admin.students.update', $student) }}">
             @csrf
             @method('PUT')
 
@@ -54,13 +54,37 @@
                     <x-input-error :messages="$errors->get('school')" />
                 </div>
 
+                {{-- Nomor HP --}}
+                <div>
+                    <x-input-label value="Nomor HP (Login)" />
+                    <x-text-input name="phone" class="mt-1 block w-full" placeholder="08xxxxxxxxxx"
+                        value="{{ old('phone', $student->user->phone ?? '') }}" />
+                    <x-input-error :messages="$errors->get('phone')" />
+                </div>
+
+
                 {{-- Alamat --}}
                 <div>
                     <x-input-label value="Alamat" />
-                    <textarea name="address" class="mt-1 block w-full border-gray-300 rounded">
-{{ old('address', $student->address) }}</textarea>
+                    <textarea name="address"
+                        class="mt-1 block w-full border-gray-300 rounded">{{ old('address', $student->address) }}</textarea>
                     <x-input-error :messages="$errors->get('address')" />
                 </div>
+                {{-- Kelas --}}
+                <div>
+                    <x-input-label value="Kelas" />
+                    <select name="class_id" class="mt-1 block w-full border-gray-300 rounded">
+                        <option value="">— Tidak ditetapkan —</option>
+                        @foreach ($classes as $class)
+                            <option value="{{ $class->id }}" @selected(old('class_id', $student->class_id) == $class->id)>
+                                {{ $class->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('class_id')" />
+                </div>
+
+
                 @if (is_null($student->user_id))
                     <div class="mt-6 border-t pt-6">
                         <h4 class="font-semibold text-sm mb-2">Buat Akun Login Siswa</h4>
@@ -76,7 +100,7 @@
             </div>
 
             <div class="flex items-center justify-end gap-3 mt-8">
-                <a href="{{ route('students.index') }}" class="text-sm text-gray-600 hover:underline">
+                <a href="{{ route('admin.students.index') }}" class="text-sm text-gray-600 hover:underline">
                     Batal
                 </a>
 

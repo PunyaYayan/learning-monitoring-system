@@ -2,71 +2,117 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Administrator',
-            'email' => 'admin@gmail.com',
-            'phone' => '0800000000',
-            'password' => bcrypt('password'),
-            'role' => 'admin',
-        ]);
+        $guruNames = [
+            'Ahmad Fauzi',
+            'Budi Santoso',
+            'Dimas Saputra',
+            'Rizky Ramadhan',
+            'Andi Pratama',
+        ];
 
-        User::create([
-            'name' => 'Miss Fitri',
-            'email' => 'fitria@gmail.com',
-            'phone' => '089876787899',
-            'password' => bcrypt('password'),
-            'role' => 'guru',
-        ]);
+        $ortuNames = [
+            'Siti Aisyah',
+            'Nurul Hidayah',
+            'Putri Ayu',
+            'Dewi Lestari',
+            'Intan Permata',
+            'Nabila Zahra',
+            'Fitri Handayani',
+            'Sarah Amelia',
+            'Lina Marlina',
+            'Sri Wahyuni',
+            'Ratna Sari',
+            'Maya Puspita',
+            'Desi Anggraini',
+            'Yuliana Putri',
+            'Citra Dewi',
+            'Novi Rahmawati',
+            'Ayu Kartika',
+            'Melati Indah',
+            'Yuliana Sari',
+            'Rina Oktavia',
+        ];
 
-        User::create([
-            'name' => 'Miss Dwi',
-            'email' => 'dwia@gmail.com',
-            'phone' => '089876787699',
-            'password' => bcrypt('password'),
-            'role' => 'guru',
-        ]);
+        $siswaNames = [
+            'Ahmad Fikri',
+            'Rizky Ramadhan',
+            'Daffa Pratama',
+            'Fauzan Maulana',
+            'Kevin Ardian',
+            'Raka Aditya',
+            'Iqbal Firmansyah',
+            'Haidar Ali',
+            'Naufal Azmi',
+            'Akbar Setiawan',
+            'Alya Putri',
+            'Zahra Aulia',
+            'Nisa Khairunnisa',
+            'Salsabila Rahma',
+            'Amelia Putri',
+            'Nadya Safitri',
+            'Cindy Oktavia',
+            'Anisa Rahma',
+            'Rani Kusuma',
+            'Putri Maharani',
+            'Bagas Saputra',
+            'Reno Kurniawan',
+            'Dion Prakoso',
+            'Arman Hidayat',
+            'Fikri Alamsyah',
+            'Rizal Akbar',
+            'Ilman Hakim',
+            'Zidan Arif',
+            'Farrel Nugraha',
+            'Rafi Alvaro',
+            'Syifa Nabila',
+            'Hana Zahira',
+            'Keysha Anindya',
+            'Salma Azzahra',
+            'Nayla Khadijah',
+            'Aira Humaira',
+            'Kayla Safira',
+            'Zara Amalia',
+            'Nabila Salsabila',
+            'Azka Rahman',
+        ];
+        // GURU
+        foreach ($guruNames as $i) {
+            User::create([
+                'name' => array_shift($guruNames),
+                'email' => strtolower(str_replace(' ', '.', 'guru' . $i)) . '@mail.test',
+                'password' => bcrypt('password'),
+                'phone' => '08' . rand(1000000000, 9999999999),
+                'role' => 'guru',
+            ]);
+        }
 
-        // STUDENT
-        User::create([
-            'name' => 'Tegar',
-            'email' => null,
-            'phone' => '088888777777',
-            'password' => bcrypt('password'),
-            'role' => 'student',
-        ]);
+        // ORANG TUA
+        foreach (range(1, 20) as $i) {
+            User::create([
+                'name' => array_shift($ortuNames),
+                'email' => strtolower(str_replace(' ', '.', 'ortu' . $i)) . '@mail.test',
+                'password' => bcrypt('password'),
+                'phone' => '08' . rand(1000000000, 9999999999),
+                'role' => 'ortu',
+            ]);
+        }
 
-        // ORTU TEGAR
-        User::create([
-            'name' => 'Bapaknya Tegar',
-            'email' => 'tegar@ar.com',
-            'phone' => '088888777789',
-            'password' => bcrypt('password'),
-            'role' => 'ortu',
-        ]);
-
-        // STUDENT
-        User::create([
-            'name' => 'Yayan',
-            'email' => null,
-            'phone' => '085155555555',
-            'password' => bcrypt('password'),
-            'role' => 'student',
-        ]);
-
-        // ORTU APIP
-        User::create([
-            'name' => 'Bapaknya Apip',
-            'email' => null,
-            'phone' => '085432215699',
-            'password' => bcrypt('password'),
-            'role' => 'ortu',
-        ]);
+        // SISWA LOGIN (20 dari 40 siswa)
+        foreach (range(1, 20) as $i) {
+            User::create([
+                'name' => array_shift($siswaNames),
+                'email' => strtolower(str_replace(' ', '.',$i)) . '@mail.test',
+                'password' => bcrypt('password'),
+                'phone' => '08' . rand(1000000000, 9999999999),
+                'role' => 'student',
+            ]);
+        }
     }
 }

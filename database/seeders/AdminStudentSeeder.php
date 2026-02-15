@@ -4,57 +4,78 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\StudentModel;
+use App\Models\User;
+use App\Models\ParentModel;
+use App\Models\ClassModel;
 
 class AdminStudentSeeder extends Seeder
 {
     public function run(): void
     {
-        StudentModel::create([
-            'fullname' => 'Tegar',
-            'birthdate' => '2003-06-02',
-            'gender' => 'male',
-            'school' => 'SMK Telkom',
-            'address' => 'Dersalam',
-            'parent_id' => 1, // parents.id (Bapaknya Tegar)
-            'class_id' => 1,
-            'status_siswa' => 'active',
-            'user_id' => 4,   // users.id (student)
-        ]);
+        $names = [
+            ['Ahmad Fikri', 'male'],
+            ['Rizky Ramadhan', 'male'],
+            ['Daffa Pratama', 'male'],
+            ['Fauzan Maulana', 'male'],
+            ['Kevin Ardian', 'male'],
+            ['Raka Aditya', 'male'],
+            ['Iqbal Firmansyah', 'male'],
+            ['Haidar Ali', 'male'],
+            ['Naufal Azmi', 'male'],
+            ['Akbar Setiawan', 'male'],
 
-        StudentModel::create([
-            'fullname' => 'Yayan',
-            'birthdate' => '2004-10-21',
-            'gender' => 'male',
-            'school' => 'SMK RUS',
-            'address' => 'Wergu Kulon',
-            'parent_id' => null,
-            'class_id' => 2,
-            'status_siswa' => 'active',
-            'user_id' => 6,
-        ]);
+            ['Alya Putri', 'female'],
+            ['Zahra Aulia', 'female'],
+            ['Nisa Khairunnisa', 'female'],
+            ['Salsabila Rahma', 'female'],
+            ['Amelia Putri', 'female'],
+            ['Nadya Safitri', 'female'],
+            ['Cindy Oktavia', 'female'],
+            ['Anisa Rahma', 'female'],
+            ['Rani Kusuma', 'female'],
+            ['Putri Maharani', 'female'],
 
-        StudentModel::create([
-            'fullname' => 'Apip',
-            'birthdate' => '2004-12-12',
-            'gender' => 'male',
-            'school' => 'SMK 2 Kudus',
-            'address' => 'Desa Desus',
-            'parent_id' => 2, // parents.id (Bapaknya Apip)
-            'class_id' => 2,
-            'status_siswa' => 'active',
-            'user_id' => null,
-        ]);
+            ['Bagas Saputra', 'male'],
+            ['Reno Kurniawan', 'male'],
+            ['Dion Prakoso', 'male'],
+            ['Arman Hidayat', 'male'],
+            ['Fikri Alamsyah', 'male'],
+            ['Rizal Akbar', 'male'],
+            ['Ilman Hakim', 'male'],
+            ['Zidan Arif', 'male'],
+            ['Farrel Nugraha', 'male'],
+            ['Rafi Alvaro', 'male'],
 
-        StudentModel::create([
-            'fullname' => 'Dalief',
-            'birthdate' => '2002-02-01',
-            'gender' => 'male',
-            'school' => 'SMK Bandung',
-            'address' => 'Desa Desus',
-            'parent_id' => 1, // SAMA dengan Tegar
-            'class_id' => 1,
-            'status_siswa' => 'active',
-            'user_id' => null,
-        ]);
+            ['Syifa Nabila', 'female'],
+            ['Hana Zahira', 'female'],
+            ['Keysha Anindya', 'female'],
+            ['Salma Azzahra', 'female'],
+            ['Nayla Khadijah', 'female'],
+            ['Aira Humaira', 'female'],
+            ['Kayla Safira', 'female'],
+            ['Zara Amalia', 'female'],
+            ['Nabila Salsabila', 'female'],
+            ['Azka Rahman', 'male'],
+        ];
+
+        $studentUsers = User::where('role', 'student')->get();
+        $parents = ParentModel::all();
+        $classes = ClassModel::all();
+
+        foreach ($names as $i => $name) {
+            StudentModel::create([
+                'fullname' => $name[0],
+                'birthdate' => now()->subYears(rand(10, 15))->toDateString(),
+                'gender' => $name[1],
+                'school' => 'SMP Negeri ' . rand(1, 5),
+                'email' => strtolower(str_replace(' ', '.', $name[0])) . '@mail.test',
+                'address' => 'Jl. Ahmad Yani No. ' . rand(1, 200),
+                'user_id' => $studentUsers[$i]->id ?? null,
+                'parent_id' => $parents->random()->id,
+                'class_id' => $classes->random()->id, // TIDAK BOLEH NULL
+                'status_siswa' => 'active',
+            ]);
+        }
+
     }
 }

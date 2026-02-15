@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <form method="POST" action="{{ route('parents.store') }}">
+        <form method="POST" action="{{ route('admin.parents.store') }}">
             @csrf
 
             <div class="space-y-5">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-8">
-                <a href="{{ route('parents.index') }}" class="text-sm text-gray-600 hover:underline">
+                <a href="{{ route('admin.parents.index') }}" class="text-sm text-gray-600 hover:underline">
                     Batal
                 </a>
                 <x-primary-button>Simpan</x-primary-button>

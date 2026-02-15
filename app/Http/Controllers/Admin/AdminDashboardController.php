@@ -7,6 +7,7 @@ use App\Models\StudentModel;
 use App\Models\ClassModel;
 use App\Models\TeacherModel;
 use App\Models\MeetingModel;
+use App\Models\StudentProgressModel;
 use Carbon\Carbon;
 
 class AdminDashboardController extends Controller
@@ -28,10 +29,27 @@ class AdminDashboardController extends Controller
         $activeMeetingsCount = $todayMeetings->count();
 
         // Aktivitas terbaru (ambil meeting terakhir sebagai representasi aktivitas)
+        // Aktivitas dari meeting (opsi A)
         $recentMeetings = MeetingModel::with(['class', 'teacher.user'])
             ->latest()
-            ->take(5)
+            ->take(3)
             ->get();
+
+        $inactiveClasses = ClassModel::with('teacher.user')
+            ->doesntHave('meetings')
+            ->orderBy('name')
+            ->take(3)
+            ->get();
+
+        // Aktivitas dari progres siswa (opsi B)
+        $recentProgresses = StudentProgressModel::with([
+            'student.class',
+            'meeting'
+        ])
+            ->latest()
+            ->take(3)
+            ->get();
+
 
         return view('admin.dashboard', compact(
             'totalStudents',
@@ -39,7 +57,11 @@ class AdminDashboardController extends Controller
             'totalTeachers',
             'activeMeetingsCount',
             'todayMeetings',
-            'recentMeetings'
+            'recentMeetings',
+            'recentProgresses',
+            'todayMeetings',
+            'inactiveClasses'
         ));
+
     }
 }

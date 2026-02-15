@@ -16,7 +16,7 @@ class AdminParentController extends Controller
      */
     public function index()
     {
-        $parents = ParentModel::withCount('students')->latest()->get();
+        $parents = ParentModel::withCount('students')->paginate(10);
         return view('admin.parents.index', compact('parents'));
     }
 
@@ -56,7 +56,7 @@ class AdminParentController extends Controller
         ]);
 
         return redirect()
-            ->route('parents.index')
+            ->route('admin.parents.index')
             ->with('success', 'Data orang tua berhasil ditambahkan.');
     }
     /**
@@ -129,7 +129,7 @@ class AdminParentController extends Controller
         }
 
         return redirect()
-            ->route('parents.show', $parent)
+            ->route('admin.parents.show', $parent)
             ->with('success', 'Data orang tua berhasil diperbarui.');
     }
 
@@ -146,12 +146,12 @@ class AdminParentController extends Controller
             $parent->delete();
 
             return redirect()
-                ->route('parents.index')
+                ->route('admin.parents.index')
                 ->with('success', 'Orang tua berhasil dihapus.');
         }
 
         return redirect()
-            ->route('parents.show', $parent)
+            ->route('admin.parents.show', $parent)
             ->with('error', 'Tidak dapat menghapus orang tua karena masih terhubung dengan siswa.');
     }
 

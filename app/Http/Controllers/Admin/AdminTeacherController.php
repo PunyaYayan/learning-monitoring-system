@@ -46,7 +46,7 @@ class AdminTeacherController extends Controller
         ]);
 
         return redirect()
-            ->route('teachers.index')
+            ->route('admin.teachers.index')
             ->with('success', 'Data guru berhasil ditambahkan.');
     }
 
@@ -93,7 +93,7 @@ class AdminTeacherController extends Controller
         ]);
 
         return redirect()
-            ->route('teachers.index')
+            ->route('admin.teachers.index')
             ->with('success', 'Data guru berhasil diperbarui.');
     }
 
@@ -108,7 +108,7 @@ class AdminTeacherController extends Controller
         }
 
         return redirect()
-            ->route('teachers.index')
+            ->route('admin.teachers.index')
             ->with('success', 'Data guru berhasil dihapus.');
     }
 

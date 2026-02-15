@@ -43,7 +43,7 @@ class AdminClassController extends Controller
 
         ClassModel::create($validated);
 
-        return redirect()->route('classes.index')
+        return redirect()->route('admin.classes.index')
             ->with('success', 'Kelas berhasil ditambahkan.');
     }
 
@@ -80,7 +80,7 @@ class AdminClassController extends Controller
 
         $class->update($validated);
 
-        return redirect()->route('classes.index')
+        return redirect()->route('admin.classes.index')
             ->with('success', 'Kelas berhasil diperbarui.');
     }
 
@@ -91,7 +91,7 @@ class AdminClassController extends Controller
     {
         $class->delete();
 
-        return redirect()->route('classes.index')
+        return redirect()->route('admin.classes.index')
             ->with('success', 'Kelas berhasil dihapus.');
     }
 }

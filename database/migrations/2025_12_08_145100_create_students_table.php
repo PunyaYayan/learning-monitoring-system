@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('fullname');
-            $table->string('birthdate')->nullable();
+            $table->date('birthdate')->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->string('school')->nullable();
             $table->string('email')->nullable();
@@ -25,7 +25,6 @@ return new class extends Migration {
             $table->timestamps();
         });
     }
-
 
     public function down(): void
     {

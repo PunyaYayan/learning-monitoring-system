@@ -16,7 +16,7 @@
         </div>
 
         {{-- Form --}}
-        <form method="POST" action="{{ route('classes.store') }}">
+        <form method="POST" action="{{ route('admin.classes.store') }}">
             @csrf
 
             <div class="space-y-5">
@@ -77,7 +77,7 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-3 mt-8">
-                <a href="{{ route('classes.index') }}" class="text-sm text-gray-600 hover:underline">
+                <a href="{{ route('admin.classes.index') }}" class="text-sm text-gray-600 hover:underline">
                     Batal
                 </a>
 

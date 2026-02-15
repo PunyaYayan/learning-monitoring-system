@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <form method="POST" action="{{ route('parents.update', $parent) }}">
+        <form method="POST" action="{{ route('admin.parents.update', $parent) }}">
             @csrf
             @method('PUT')
 
@@ -41,7 +41,7 @@
 
                 <div class="flex justify-end items-center mt-8">
                     <div class="flex gap-3">
-                        <a href="{{ route('parents.show', $parent) }}" class="text-sm text-gray-600 hover:underline">
+                        <a href="{{ route('admin.parents.show', $parent) }}" class="text-sm text-gray-600 hover:underline">
                             Batal
                         </a>
                         <x-primary-button>Simpan Perubahan</x-primary-button>
@@ -134,7 +134,7 @@
                                         {{ $student->fullname }}
                                     </span>
 
-                                    <a href="{{ route('students.edit', $student) }}"
+                                    <a href="{{ route('admin.students.edit', $student) }}"
                                         class="text-xs text-blue-600 hover:underline">
                                         Edit
                                     </a>
